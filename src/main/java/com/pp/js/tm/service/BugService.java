@@ -42,6 +42,7 @@ public class BugService {
     bug.setSteps(createBugDto.getSteps());
     bug.setName(createBugDto.getName());
     bug.setCreatedAt(Instant.now());
+    bug.setType("bug");
     return bug;
   }
 

@@ -1,7 +1,9 @@
 package com.pp.js.tm.testservice;
 
+import com.pp.js.tm.entity.Feature;
 import com.pp.js.tm.repository.FeatureRepository;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 @Transactional
@@ -16,5 +18,20 @@ public class TestFeatureService {
 
   public void deleteAll() {
     featureRepository.deleteAll();
+  }
+
+  public void createFeature() {
+    Feature feature = getFeature();
+    featureRepository.save(feature);
+  }
+
+  private Feature getFeature() {
+    Feature feature = new Feature();
+    feature.setType("feature");
+    feature.setDeadline(Instant.now());
+    feature.setBusinessValue("businessValue");
+    feature.setName("name");
+    feature.setCreatedAt(Instant.now());
+    return feature;
   }
 }

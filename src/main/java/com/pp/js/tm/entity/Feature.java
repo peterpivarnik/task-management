@@ -3,6 +3,7 @@ package com.pp.js.tm.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
  */
 @Entity
 @Table(name = "feature")
+@PrimaryKeyJoinColumn(name="feature_id", referencedColumnName = "id")
 public class Feature extends Task {
 
   @Column(name = "business_value")

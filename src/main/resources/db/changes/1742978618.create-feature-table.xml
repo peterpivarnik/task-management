@@ -5,26 +5,11 @@
 
     <changeSet author="Peter Pivarnik" id="create_feature_table">
         <createTable tableName="feature">
-            <column name="id" type="INTEGER">
+            <column name="feature_id" type="INTEGER">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="uuid" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(1024)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="task_management_user_id" type="INTEGER"/>
             <column name="business_value" type="VARCHAR(32)"/>
             <column name="deadline" type="TIMESTAMP"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="task_management_user_id"
-                                 baseTableName="feature"
-                                 constraintName="fk_feature_task_management_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="task_management_user"/>
     </changeSet>
 </databaseChangeLog>

@@ -42,6 +42,7 @@ public class FeatureService {
     feature.setBusinessValue(createFeatureDto.getBusinessValue());
     feature.setName(createFeatureDto.getName());
     feature.setCreatedAt(Instant.now());
+    feature.setType("feature");
     return feature;
   }
 
