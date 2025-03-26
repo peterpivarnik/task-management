@@ -82,7 +82,7 @@ class UserControllerTest {
   }
 
   @Test
-  void shouldGetUsers() {
+  void shouldGetUserByUid() {
     String userUid = testTaskManagementUserService.createUser("testFirstName", "testLastName");
 
     UserResponseDto userResponseDto = given()

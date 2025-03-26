@@ -4,6 +4,8 @@ import com.pp.js.tm.service.FeatureService;
 import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,18 @@ public class FeatureController {
   @PostMapping(value = "/task-management/feature")
   public ResponseEntity<FeatureResponseDto> createFeature(@RequestBody CreateFeatureDto createFeatureDto) {
     FeatureResponseDto feature = featureService.createFeature(createFeatureDto);
+    return ResponseEntity.ok(feature);
+  }
+
+  /**
+   * Returns feature by feature uid.
+   *
+   * @param featureUid uid of feature
+   * @return found feature
+   */
+  @GetMapping(value = "/task-management/feature/{featureUid}")
+  public ResponseEntity<FeatureResponseDto> getFeatureByUid(@PathVariable String featureUid) {
+    FeatureResponseDto feature = featureService.getFeature(featureUid);
     return ResponseEntity.ok(feature);
   }
 }

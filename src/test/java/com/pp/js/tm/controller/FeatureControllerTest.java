@@ -5,9 +5,11 @@ import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-import com.pp.js.tm.service.dto.FeatureResponseDto;
+import com.pp.js.tm.entity.Feature;
 import com.pp.js.tm.service.dto.CreateFeatureDto;
+import com.pp.js.tm.service.dto.FeatureResponseDto;
 import com.pp.js.tm.testservice.TestFeatureService;
+import io.restassured.http.ContentType;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,7 @@ class FeatureControllerTest {
   void shouldCreateFeature() {
     CreateFeatureDto request = createFeatureDto();
 
-    FeatureResponseDto bugResponseDto = given()
+    FeatureResponseDto feature = given()
         .port(port)
         .accept(JSON)
         .contentType(JSON)
@@ -45,11 +47,11 @@ class FeatureControllerTest {
         .extract()
         .as(FeatureResponseDto.class);
 
-    assertThat(bugResponseDto.getName()).isEqualTo(request.getName());
-    assertThat(bugResponseDto.getBusinessValue()).isEqualTo(request.getBusinessValue());
-    assertThat(bugResponseDto.getDeadLine()).isEqualTo(request.getDeadLine());
-    assertThat(bugResponseDto.getUid()).isNotNull();
-    assertThat(bugResponseDto.getCreatedAt()).isNotNull();
+    assertThat(feature.getName()).isEqualTo(request.getName());
+    assertThat(feature.getBusinessValue()).isEqualTo(request.getBusinessValue());
+    assertThat(feature.getDeadLine()).isEqualTo(request.getDeadLine());
+    assertThat(feature.getUid()).isNotNull();
+    assertThat(feature.getCreatedAt()).isNotNull();
   }
 
   private CreateFeatureDto createFeatureDto() {
@@ -58,5 +60,28 @@ class FeatureControllerTest {
     createFeatureDto.setBusinessValue("Business value");
     createFeatureDto.setDeadLine(LocalDateTime.now());
     return createFeatureDto;
+  }
+
+  @Test
+  void shouldGetFeatureByUid() {
+    Feature feature = testFeatureService.createFeature();
+
+    FeatureResponseDto foundFeature = given()
+        .port(port)
+        .accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+        .when()
+        .pathParam("featureUid", feature.getUid())
+        .get("/task-management/feature/{featureUid}")
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(FeatureResponseDto.class);
+
+    assertThat(feature.getName()).isEqualTo(foundFeature.getName());
+    assertThat(feature.getBusinessValue()).isEqualTo(foundFeature.getBusinessValue());
+    assertThat(feature.getDeadline()).isNotNull();
+    assertThat(feature.getUid()).isEqualTo(foundFeature.getUid());
+    assertThat(feature.getCreatedAt()).isNotNull();
   }
 }

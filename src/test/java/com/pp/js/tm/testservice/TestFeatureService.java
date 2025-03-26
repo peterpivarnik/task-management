@@ -20,9 +20,9 @@ public class TestFeatureService {
     featureRepository.deleteAll();
   }
 
-  public void createFeature() {
+  public Feature createFeature() {
     Feature feature = getFeature();
-    featureRepository.save(feature);
+    return featureRepository.save(feature);
   }
 
   private Feature getFeature() {

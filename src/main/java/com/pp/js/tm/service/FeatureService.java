@@ -3,6 +3,7 @@ package com.pp.js.tm.service;
 import static java.time.ZoneOffset.UTC;
 
 import com.pp.js.tm.entity.Feature;
+import com.pp.js.tm.exception.EntityNotFoundException;
 import com.pp.js.tm.repository.FeatureRepository;
 import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
@@ -54,5 +55,28 @@ public class FeatureService {
     response.setDeadLine(LocalDateTime.ofInstant(savedFeature.getDeadline(), UTC));
     response.setUid(savedFeature.getUid());
     return response;
+  }
+
+  /**
+   * Returns feature by its uid.
+   *
+   * @param featureUid uid of feature
+   * @return feature
+   */
+  public FeatureResponseDto getFeature(String featureUid) {
+    return featureRepository.findByUid(featureUid)
+                            .map(this::toFeatureResponse)
+                            .orElseThrow(
+                                () -> new EntityNotFoundException("Feature with uid" + featureUid + " not found!"));
+  }
+
+  private FeatureResponseDto toFeatureResponse(Feature feature) {
+    FeatureResponseDto featureResponseDto = new FeatureResponseDto();
+    featureResponseDto.setUid(feature.getUid());
+    featureResponseDto.setDeadLine(LocalDateTime.ofInstant(feature.getDeadline(), UTC));
+    featureResponseDto.setBusinessValue(feature.getBusinessValue());
+    featureResponseDto.setName(feature.getName());
+    featureResponseDto.setCreatedAt(LocalDateTime.ofInstant(feature.getCreatedAt(), UTC));
+    return featureResponseDto;
   }
 }
