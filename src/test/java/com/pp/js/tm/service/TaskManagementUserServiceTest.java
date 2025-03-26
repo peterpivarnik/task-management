@@ -129,14 +129,23 @@ class TaskManagementUserServiceTest {
 
   @Test
   void shouldUpdateUser() {
-    UpdateUserRequestDto updateUserRequest = new UpdateUserRequestDto();
+    UpdateUserRequestDto updateUserRequest = createUpdateUserRequestDto();
     TaskManagementUser taskManagementUser = createTaskManagementUser();
     when(taskManagementUserRepository.findByUid(updateUserRequest.getUid()))
         .thenReturn(Optional.of(taskManagementUser));
 
+    when(taskManagementUserRepository.save(taskManagementUser))
+        .thenReturn(taskManagementUser);
+
     taskManagementUserService.updateUser(updateUserRequest);
 
     verify(taskManagementUserRepository).save(taskManagementUser);
+  }
+
+  private UpdateUserRequestDto createUpdateUserRequestDto() {
+    UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto();
+    updateUserRequestDto.setUid("uid");
+    return updateUserRequestDto;
   }
 
   @Test

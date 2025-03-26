@@ -34,7 +34,7 @@ public class TaskManagementUserService {
   private TaskManagementUser mapUser(CreateUserRequestDto createUserRequestDto) {
     TaskManagementUser user = new TaskManagementUser();
     user.setFirstName(createUserRequestDto.getFirstName());
-    user.setLastName(user.getLastName());
+    user.setLastName(createUserRequestDto.getLastName());
     return user;
   }
 
@@ -55,7 +55,8 @@ public class TaskManagementUserService {
   public UserResponseDto getUser(String uid) {
     return taskManagementUserRepository.findByUid(uid)
                                        .map(this::mapToUserDto)
-                                       .orElseThrow(() -> new EntityNotFoundException("User with uid " + uid + " not found!"));
+                                       .orElseThrow(
+                                           () -> new EntityNotFoundException("User with uid " + uid + " not found!"));
 
   }
 
@@ -65,19 +66,17 @@ public class TaskManagementUserService {
 
   }
 
-  public void updateUser(UpdateUserRequestDto updateUserRequestDto) {
-    taskManagementUserRepository.findByUid(updateUserRequestDto.getUid())
-                                .ifPresentOrElse(user -> updateUserEntity(user, updateUserRequestDto),
-                                   () -> {
-                                     throw new EntityNotFoundException(
-                                         "User with uid " + updateUserRequestDto.getUid() + " not found!");
-                                   });
-
+  public UserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto) {
+    return taskManagementUserRepository.findByUid(updateUserRequestDto.getUid())
+                                       .map(user -> updateUserEntity(user, updateUserRequestDto))
+                                       .map(this::mapToUserDto)
+                                       .orElseThrow(() -> new EntityNotFoundException(
+                                           "User with uid " + updateUserRequestDto.getUid() + " not found!"));
   }
 
-  private void updateUserEntity(TaskManagementUser user, UpdateUserRequestDto updateUserRequestDto) {
+  private TaskManagementUser updateUserEntity(TaskManagementUser user, UpdateUserRequestDto updateUserRequestDto) {
     user.setFirstName(updateUserRequestDto.getFirstName());
     user.setLastName(updateUserRequestDto.getLastName());
-    taskManagementUserRepository.save(user);
+    return taskManagementUserRepository.save(user);
   }
 }
