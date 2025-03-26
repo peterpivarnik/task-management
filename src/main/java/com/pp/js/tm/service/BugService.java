@@ -3,9 +3,11 @@ package com.pp.js.tm.service;
 import static java.time.ZoneOffset.UTC;
 
 import com.pp.js.tm.entity.Bug;
+import com.pp.js.tm.exception.EntityNotFoundException;
 import com.pp.js.tm.repository.BugRepository;
 import com.pp.js.tm.service.dto.BugResponseDto;
 import com.pp.js.tm.service.dto.CreateBugDto;
+import com.pp.js.tm.service.dto.UpdateBugDto;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -54,5 +56,42 @@ public class BugService {
     response.setUid(savedBug.getUid());
     response.setSteps(savedBug.getSteps());
     return response;
+  }
+
+  public BugResponseDto getBug(String bugUid) {
+    return bugRepository.findByUid(bugUid)
+                        .map(this::toBugResponse)
+                        .orElseThrow(
+                            () -> new EntityNotFoundException("Bug with uid" + bugUid + " not found!"));
+  }
+
+  private BugResponseDto toBugResponse(Bug bug) {
+    BugResponseDto bugResponseDto = new BugResponseDto();
+    bugResponseDto.setUid(bug.getUid());
+    bugResponseDto.setSteps(bug.getSteps());
+    bugResponseDto.setSeverity(bug.getSeverity());
+    bugResponseDto.setName(bug.getName());
+    bugResponseDto.setCreatedAt(LocalDateTime.ofInstant(bug.getCreatedAt(), UTC));
+    return bugResponseDto;
+  }
+
+  public BugResponseDto updateBug(UpdateBugDto updateBugDto) {
+    return bugRepository.findByUid(updateBugDto.getUid())
+                        .map(bug -> updateBugEntity(bug, updateBugDto))
+                        .map(this::toBugResponse)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                            "User with uid " + updateBugDto.getUid() + " not found!"));
+  }
+
+  private Bug updateBugEntity(Bug bug, UpdateBugDto updateBugDto) {
+    bug.setName(updateBugDto.getName());
+    bug.setSeverity(updateBugDto.getSeverity());
+    bug.setSteps(updateBugDto.getSteps());
+    return bugRepository.save(bug);
+  }
+
+  public void deleteBug(String bugUid) {
+    bugRepository.findByUid(bugUid)
+                 .ifPresent(bugRepository::delete);
   }
 }
