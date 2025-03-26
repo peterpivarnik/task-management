@@ -22,7 +22,7 @@ public abstract class Task extends BaseEntity {
   private String name;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "task_management_user_id")
   private TaskManagementUser taskManagementUser;
 
   public Instant getCreatedAt() {

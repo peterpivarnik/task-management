@@ -27,7 +27,7 @@ class UserControllerTest {
   private TestTaskManagementUserService testTaskManagementUserService;
 
   @BeforeEach
-  void befeoreEach() {
+  void beforeEach() {
     testTaskManagementUserService.deleteAll();
   }
 
