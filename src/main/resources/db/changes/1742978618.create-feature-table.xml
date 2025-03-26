@@ -8,6 +8,9 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="uid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>

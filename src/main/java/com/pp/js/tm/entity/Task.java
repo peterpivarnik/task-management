@@ -1,11 +1,7 @@
 package com.pp.js.tm.entity;
 
-import static jakarta.persistence.GenerationType.SEQUENCE;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
@@ -16,14 +12,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
  * Abstract entity representing task.
  */
 @MappedSuperclass
-public abstract class Task {
-
-  private static final String TASK_ID_SEQ = "sq_task_id";
-
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = SEQUENCE, generator = TASK_ID_SEQ)
-  private Integer id;
+public abstract class Task extends BaseEntity {
 
   @Column(name = "created_at", nullable = false)
   @Convert(converter = Jsr310JpaConverters.InstantConverter.class)
@@ -35,14 +24,6 @@ public abstract class Task {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 
   public Instant getCreatedAt() {
     return createdAt;
@@ -67,4 +48,5 @@ public abstract class Task {
   public void setUser(User user) {
     this.user = user;
   }
+
 }

@@ -8,6 +8,9 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="uid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="first_name" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
