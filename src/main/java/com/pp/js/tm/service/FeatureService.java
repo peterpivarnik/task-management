@@ -95,4 +95,9 @@ public class FeatureService {
     feature.setBusinessValue(updateFeatureDto.getBusinessValue());
     return featureRepository.save(feature);
   }
+
+  public void deleteFeature(String featureUid) {
+    featureRepository.findByUid(featureUid)
+                     .ifPresent(featureRepository::delete);
+  }
 }

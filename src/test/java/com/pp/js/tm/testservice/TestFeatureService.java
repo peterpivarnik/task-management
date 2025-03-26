@@ -1,9 +1,11 @@
 package com.pp.js.tm.testservice;
 
 import com.pp.js.tm.entity.Feature;
+import com.pp.js.tm.entity.TaskManagementUser;
 import com.pp.js.tm.repository.FeatureRepository;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Transactional
@@ -33,5 +35,9 @@ public class TestFeatureService {
     feature.setName("name");
     feature.setCreatedAt(Instant.now());
     return feature;
+  }
+
+  public List<Feature> findAll() {
+    return featureRepository.findAll();
   }
 }

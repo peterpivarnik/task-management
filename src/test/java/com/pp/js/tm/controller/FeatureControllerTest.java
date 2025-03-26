@@ -14,7 +14,7 @@ import io.restassured.http.ContentType;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Period;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,5 +119,26 @@ class FeatureControllerTest {
     updateFeatureDto.setName("newName");
     updateFeatureDto.setDeadline(Instant.now().plus(Duration.ofHours(50)));
     return updateFeatureDto;
+  }
+
+  @Test
+  void shouldDeleteFeature() {
+    Feature feature = testFeatureService.createFeature();
+
+    List<Feature> allFeatures = testFeatureService.findAll();
+    assertThat(allFeatures).hasSize(1);
+
+    given()
+        .port(port)
+        .accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+        .when()
+        .pathParam("featureUid", feature.getUid())
+        .delete("/task-management/feature/{featureUid}")
+        .then()
+        .statusCode(204);
+
+    allFeatures = testFeatureService.findAll();
+    assertThat(allFeatures).isEmpty();
   }
 }

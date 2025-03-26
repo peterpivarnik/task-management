@@ -5,6 +5,7 @@ import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
 import com.pp.js.tm.service.dto.UpdateFeatureDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,5 +59,17 @@ public class FeatureController {
   public ResponseEntity<FeatureResponseDto> updateFeature(@RequestBody UpdateFeatureDto updateFeatureDto) {
     FeatureResponseDto feature = featureService.updateFeature(updateFeatureDto);
     return ResponseEntity.ok(feature);
+  }
+
+  /**
+   * Delete feature.
+   *
+   * @param featureUid uid of feature to be deleted
+   * @return empty response
+   */
+  @DeleteMapping(value = "/task-management/feature/{featureUid}")
+  public ResponseEntity<Void> deleteFeature(@PathVariable String featureUid) {
+    featureService.deleteFeature(featureUid);
+    return ResponseEntity.noContent().build();
   }
 }

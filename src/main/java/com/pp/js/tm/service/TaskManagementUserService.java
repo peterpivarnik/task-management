@@ -63,7 +63,6 @@ public class TaskManagementUserService {
   public void deleteUser(String uid) {
     taskManagementUserRepository.findByUid(uid)
                                 .ifPresent(taskManagementUserRepository::delete);
-
   }
 
   public UserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto) {
