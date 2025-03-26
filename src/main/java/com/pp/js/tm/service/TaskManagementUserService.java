@@ -7,6 +7,7 @@ import com.pp.js.tm.service.dto.CreateUserRequestDto;
 import com.pp.js.tm.service.dto.UpdateUserRequestDto;
 import com.pp.js.tm.service.dto.UserResponseDto;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -53,29 +54,33 @@ public class TaskManagementUserService {
   }
 
   public UserResponseDto getUser(String uid) {
-    return taskManagementUserRepository.findByUid(uid)
-                                       .map(this::mapToUserDto)
-                                       .orElseThrow(
-                                           () -> new EntityNotFoundException("User with uid " + uid + " not found!"));
+    return findByUid(uid)
+        .map(this::mapToUserDto)
+        .orElseThrow(
+            () -> new EntityNotFoundException("User with uid " + uid + " not found!"));
 
   }
 
   public void deleteUser(String uid) {
-    taskManagementUserRepository.findByUid(uid)
-                                .ifPresent(taskManagementUserRepository::delete);
+    findByUid(uid)
+        .ifPresent(taskManagementUserRepository::delete);
   }
 
   public UserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto) {
-    return taskManagementUserRepository.findByUid(updateUserRequestDto.getUid())
-                                       .map(user -> updateUserEntity(user, updateUserRequestDto))
-                                       .map(this::mapToUserDto)
-                                       .orElseThrow(() -> new EntityNotFoundException(
-                                           "User with uid " + updateUserRequestDto.getUid() + " not found!"));
+    return findByUid(updateUserRequestDto.getUid())
+        .map(user -> updateUserEntity(user, updateUserRequestDto))
+        .map(this::mapToUserDto)
+        .orElseThrow(() -> new EntityNotFoundException(
+            "User with uid " + updateUserRequestDto.getUid() + " not found!"));
   }
 
   private TaskManagementUser updateUserEntity(TaskManagementUser user, UpdateUserRequestDto updateUserRequestDto) {
     user.setFirstName(updateUserRequestDto.getFirstName());
     user.setLastName(updateUserRequestDto.getLastName());
     return taskManagementUserRepository.save(user);
+  }
+
+  public Optional<TaskManagementUser> findByUid(String uid) {
+    return taskManagementUserRepository.findByUid(uid);
   }
 }

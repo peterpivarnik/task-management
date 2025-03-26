@@ -5,6 +5,7 @@ public class TaskResponseDto {
   private String name;
   private String uid;
   private String type;
+  private UserResponseDto user;
 
   public String getName() {
     return name;
@@ -28,5 +29,13 @@ public class TaskResponseDto {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public UserResponseDto getUser() {
+    return user;
+  }
+
+  public void setUser(UserResponseDto user) {
+    this.user = user;
   }
 }
