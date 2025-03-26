@@ -8,13 +8,20 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER"/>
             <column name="business_value" type="VARCHAR(32)"/>
             <column name="deadline" type="TIMESTAMP"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="id"
+        <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="feature"
-                                 constraintName="fk_feature_task_id"
+                                 constraintName="fk_feature_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="task"/>
+                                 referencedTableName="user"/>
     </changeSet>
 </databaseChangeLog>
