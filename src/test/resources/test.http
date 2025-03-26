@@ -1,0 +1,111 @@
+### Create user
+POST http://localhost:8080/task-management/user
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Peter ",
+  "lastName": "Parker"
+}
+
+### Get all users
+GET http://localhost:8080/task-management/user?pageNumber=0&pageSize=10
+Content-Type: application/json
+Accept: application/json
+
+### Get user by uid
+GET http://localhost:8080/task-management/user/6046d0a8-337d-425b-9ffc-635b57d66c45
+Content-Type: application/json
+Accept: application/json
+
+### Delete user
+DELETE http://localhost:8080/task-management/user/6046d0a8-337d-425b-9ffc-635b57d66c45
+Content-Type: application/json
+Accept: application/json
+
+### Modify user
+PUT http://localhost:8080/task-management/user
+Content-Type: application/json
+Accept: application/json
+
+{
+  "uid" : "6046d0a8-337d-425b-9ffc-635b57d66c45",
+  "firstName": "Tonyxxx",
+  "lastName": "Starkxxx"
+}
+
+### Create bug
+POST http://localhost:8080/task-management/bug
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "my favorite bug7",
+  "severity": "NORMAL7",
+  "steps": "1. create, 2, delete, 3. getyyy"
+}
+
+### Get bug by uid
+GET http://localhost:8080/task-management/bug/9c5fd693-3621-4c7d-849d-b021987cca04
+Content-Type: application/json
+Accept: application/json
+
+### Delete bug by uid
+DELETE http://localhost:8080/task-management/bug/9c5fd693-3621-4c7d-849d-b021987cca04
+Content-Type: application/json
+Accept: application/json
+
+### Update bug
+PUT http://localhost:8080/task-management/bug
+Content-Type: application/json
+Accept: application/json
+
+{
+  "uid" : "10d2e68d-63a2-41d7-bad6-0fd83bc848d2",
+  "name": "my favorite bug8",
+  "severity": "NORMAL8",
+  "steps": "1. create, 2, delete, 3. getyyy"
+}
+
+### Create feature
+POST http://localhost:8080/task-management/feature
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "my favorite feature6",
+  "businessValue": "business value6",
+  "deadLine": "2025-05-20T20:00:00"
+}
+
+### Get feature by uid
+GET http://localhost:8080/task-management/feature/249c9fb2-76e6-4bea-8c1d-0195296af3aa
+Content-Type: application/json
+Accept: application/json
+
+### Delete feature by uid
+DELETE http://localhost:8080/task-management/feature/249c9fb2-76e6-4bea-8c1d-0195296af3aa
+Content-Type: application/json
+Accept: application/json
+
+### Update feature
+PUT http://localhost:8080/task-management/feature
+Content-Type: application/json
+Accept: application/json
+
+{
+  "uid" : "249c9fb2-76e6-4bea-8c1d-0195296af3aa",
+  "name": "my favorite feature",
+  "businessValue": "business value",
+  "deadline": "2025-06-15T20:00:00"
+}
+
+### Get all tasks
+GET http://localhost:8080/task-management/task?pageNumber=0&pageSize=10
+Content-Type: application/json
+Accept: application/json
+
+### Assign task to user
+PATCH http://localhost:8080/task-management/task/80ee9359-9548-4808-b439-b19413cf6384/6046d0a8-337d-425b-9ffc-635b57d66c45
+Content-Type: application/json
+Accept: application/json

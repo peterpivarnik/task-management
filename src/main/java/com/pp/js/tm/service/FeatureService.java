@@ -1,7 +1,5 @@
 package com.pp.js.tm.service;
 
-import static java.time.ZoneOffset.UTC;
-
 import com.pp.js.tm.entity.Feature;
 import com.pp.js.tm.exception.EntityNotFoundException;
 import com.pp.js.tm.repository.FeatureRepository;
@@ -9,9 +7,12 @@ import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
 import com.pp.js.tm.service.dto.UpdateFeatureDto;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
-import org.springframework.stereotype.Service;
+
+import static java.time.ZoneOffset.UTC;
 
 /**
  * Service providing extended functionality for {@link FeatureRepository}.
@@ -74,7 +75,7 @@ public class FeatureService {
   private FeatureResponseDto toFeatureResponse(Feature feature) {
     FeatureResponseDto featureResponseDto = new FeatureResponseDto();
     featureResponseDto.setUid(feature.getUid());
-    featureResponseDto.setDeadLine(LocalDateTime.ofInstant(feature.getDeadline(), UTC));
+    featureResponseDto.setDeadLine(feature.getDeadline() != null ? LocalDateTime.ofInstant(feature.getDeadline(), UTC) : null);
     featureResponseDto.setBusinessValue(feature.getBusinessValue());
     featureResponseDto.setName(feature.getName());
     featureResponseDto.setCreatedAt(LocalDateTime.ofInstant(feature.getCreatedAt(), UTC));
@@ -91,7 +92,7 @@ public class FeatureService {
 
   private Feature updateFeatureEntity(Feature feature, UpdateFeatureDto updateFeatureDto) {
     feature.setName(updateFeatureDto.getName());
-    feature.setDeadline(updateFeatureDto.getDeadline());
+    feature.setDeadline(updateFeatureDto.getDeadline() != null ? updateFeatureDto.getDeadline().toInstant(UTC) : null);
     feature.setBusinessValue(updateFeatureDto.getBusinessValue());
     return featureRepository.save(feature);
   }

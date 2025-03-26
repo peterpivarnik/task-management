@@ -34,6 +34,4 @@ public class AssignTaskFacade {
     Task savedTask = taskService.save(task);
     return TaskMapper.mapToTaskResponse(savedTask);
   }
-
-
 }
