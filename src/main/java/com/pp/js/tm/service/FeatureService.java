@@ -7,6 +7,7 @@ import com.pp.js.tm.exception.EntityNotFoundException;
 import com.pp.js.tm.repository.FeatureRepository;
 import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
+import com.pp.js.tm.service.dto.UpdateFeatureDto;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -78,5 +79,20 @@ public class FeatureService {
     featureResponseDto.setName(feature.getName());
     featureResponseDto.setCreatedAt(LocalDateTime.ofInstant(feature.getCreatedAt(), UTC));
     return featureResponseDto;
+  }
+
+  public FeatureResponseDto updateFeature(UpdateFeatureDto updateFeatureDto) {
+    return featureRepository.findByUid(updateFeatureDto.getUid())
+                            .map(feature -> updateFeatureEntity(feature, updateFeatureDto))
+                            .map(this::toFeatureResponse)
+                            .orElseThrow(() -> new EntityNotFoundException(
+                                "User with uid " + updateFeatureDto.getUid() + " not found!"));
+  }
+
+  private Feature updateFeatureEntity(Feature feature, UpdateFeatureDto updateFeatureDto) {
+    feature.setName(updateFeatureDto.getName());
+    feature.setDeadline(updateFeatureDto.getDeadline());
+    feature.setBusinessValue(updateFeatureDto.getBusinessValue());
+    return featureRepository.save(feature);
   }
 }

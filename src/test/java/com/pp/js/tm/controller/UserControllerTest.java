@@ -123,7 +123,6 @@ class UserControllerTest {
     assertThat(allUsers).isEmpty();
   }
 
-
   @Test
   void shouldUpdateUser() {
     String userUid = testTaskManagementUserService.createUser("testFirstName", "testLastName");

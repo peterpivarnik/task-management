@@ -8,9 +8,13 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import com.pp.js.tm.entity.Feature;
 import com.pp.js.tm.service.dto.CreateFeatureDto;
 import com.pp.js.tm.service.dto.FeatureResponseDto;
+import com.pp.js.tm.service.dto.UpdateFeatureDto;
 import com.pp.js.tm.testservice.TestFeatureService;
 import io.restassured.http.ContentType;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Period;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +87,37 @@ class FeatureControllerTest {
     assertThat(feature.getDeadline()).isNotNull();
     assertThat(feature.getUid()).isEqualTo(foundFeature.getUid());
     assertThat(feature.getCreatedAt()).isNotNull();
+  }
+
+  @Test
+  void shouldUpdateFeature() {
+    Feature feature = testFeatureService.createFeature();
+    UpdateFeatureDto request = createUpdateFeatureDto(feature.getUid());
+
+    FeatureResponseDto foundFeature = given()
+        .port(port)
+        .accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+        .body(request)
+        .when()
+        .put("/task-management/feature")
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(FeatureResponseDto.class);
+
+    assertThat(foundFeature.getUid()).isEqualTo(request.getUid());
+    assertThat(foundFeature.getName()).isEqualTo(request.getName());
+    assertThat(foundFeature.getBusinessValue()).isEqualTo(request.getBusinessValue());
+    assertThat(foundFeature.getDeadLine()).isAfter(LocalDateTime.now());
+  }
+
+  private UpdateFeatureDto createUpdateFeatureDto(String uid) {
+    UpdateFeatureDto updateFeatureDto = new UpdateFeatureDto();
+    updateFeatureDto.setUid(uid);
+    updateFeatureDto.setBusinessValue("new Business Value");
+    updateFeatureDto.setName("newName");
+    updateFeatureDto.setDeadline(Instant.now().plus(Duration.ofHours(50)));
+    return updateFeatureDto;
   }
 }
