@@ -23,7 +23,7 @@ public abstract class Task extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private User user;
+  private TaskManagementUser taskManagementUser;
 
   public Instant getCreatedAt() {
     return createdAt;
@@ -41,12 +41,12 @@ public abstract class Task extends BaseEntity {
     this.name = name;
   }
 
-  public User getUser() {
-    return user;
+  public TaskManagementUser getTaskManagementUser() {
+    return taskManagementUser;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setTaskManagementUser(TaskManagementUser taskManagementUser) {
+    this.taskManagementUser = taskManagementUser;
   }
 
 }

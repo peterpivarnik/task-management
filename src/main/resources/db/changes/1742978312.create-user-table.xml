@@ -3,13 +3,17 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+    <changeSet author="Peter Pivarnik" id="create-id-sequence">
+        <createSequence sequenceName="sq_id" startValue="1"/>
+    </changeSet>
+
     <changeSet author="Peter Pivarnik" id="create_user_table">
-        <createTable tableName="user">
+        <createTable tableName="task_management_user">
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="uid" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+            <column name="uuid" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="first_name" type="VARCHAR(32)">
                 <constraints nullable="false"/>

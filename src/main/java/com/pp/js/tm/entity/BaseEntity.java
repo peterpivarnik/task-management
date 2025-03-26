@@ -8,6 +8,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.SequenceGenerator;
 
 /**
  * Parent entity for all other entities.
@@ -16,14 +17,15 @@ import jakarta.persistence.MappedSuperclass;
 @EntityListeners(UidBaseEntityListener.class)
 public abstract class BaseEntity {
 
-  private static final String SEQUENCE_ID = "sq_id";
+  private static final String COL_ID_SEQ = "sq_id";
 
   @Id
   @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = SEQUENCE, generator = SEQUENCE_ID)
+  @SequenceGenerator(name = COL_ID_SEQ, allocationSize = 1)
+  @GeneratedValue(strategy = SEQUENCE, generator = COL_ID_SEQ)
   private Integer id;
 
-  @Column(name = "uid")
+  @Column(name = "uuid", nullable = false, unique = true)
   private String uid;
 
   public Integer getId() {

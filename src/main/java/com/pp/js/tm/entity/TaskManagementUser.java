@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
  * Entity representing db table user.
  */
 @Entity
-@Table(name = "user")
-public class User extends BaseEntity {
+@Table(name = "task_management_user")
+public class TaskManagementUser extends BaseEntity {
 
   @Column(name = "first_name", nullable = false)
   private String firstName;
